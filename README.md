@@ -7,12 +7,16 @@ Please provide all the permissions requested while adding the bot or it may not 
 ## Prefix : ?   
 Use this before calling any command (example: ?help)  
 
-## Currently supported command List:  
+## Currently supported command List:
+### Standard commands
 commands   
 help  
-setid  
+set (Brawlhalla ID)  
 rank (stats can also be used)  
-autoset  
+stop  
+### Admin commands
+auto  (true/false)  
+reset
 
 The bot is hosted on replit (https://replit.com/@PaulKallumkal/BrawlBot)  
 Uptimebot is used to keep it active 24/7 (https://uptimerobot.com/)  
