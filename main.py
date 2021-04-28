@@ -19,8 +19,9 @@ async def on_ready():
 
 @client.event
 async def on_guild_join(guild):
-  db['guilds'][guild.id] = await role_check(guild)
-  if(not db['guilds'][guild.id]):
+  if(await role_check(guild)):
+    db['guilds'].append(guild.id) 
+  else:
     warn_admins(guild)
   
 @client.event
@@ -37,7 +38,7 @@ async def on_message(message):
   await help_msg(message)
   await stop_msg(message)
 
-  await auto_msg(g_list, message)
+  await auto_msg(message)
   await reset_msg(client, message)
 
 active()

@@ -61,13 +61,13 @@ async def stop_msg(client, message):
     
 #admin commands
 
-async def auto_msg(g_list, message):
+async def auto_msg(message):
   if(message.content.startswith('?auto')):
     if(message.content == '?auto'):
       return await message.channel.send("Automatic role update is" + "on" if g_list[message.guild] else "off")
     if(message.author.guild_permissions.administrator):
-      g_list[message.guild] = 'true' == message.content.split()[1].lower()
-      if(g_list[message.guild]):
+      if 'true' == message.content.split()[1].lower():
+        db['guilds']
         return await message.channel.send("Automatic role update is on")
       return await message.channel.send("Automatic role update is off")
     await message.channel.send("Admin permissions required")
