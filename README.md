@@ -6,8 +6,8 @@ Please provide all the permissions requested while adding the bot or it may not 
 
 [Link to add BrawlBot](https://discord.com/api/oauth2/authorize?client_id=836287558970900540&permissions=268487744&scope=bot)
 
-### Prefix : ?   
-Use this before calling any command (example: ?help)  
+### Prefix : bb   
+Use this before calling any command (example: bb help)  
 
 ## Currently supported command List:
 ### Standard commands
