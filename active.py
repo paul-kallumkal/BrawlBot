@@ -12,5 +12,9 @@ def run():
 
 def active():
   t= Thread(target=run)
+<<<<<<< HEAD
   t.start()
 
+=======
+  t.start()
+>>>>>>> 4e61ae53a33806e55088cd41b46dc99e5cc18d94
