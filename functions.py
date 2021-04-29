@@ -62,7 +62,6 @@ async def automate(client):
             else:
               await set_role(m,data)
       await asyncio.sleep(15)
-      print("loop")
     await asyncio.sleep(5)
       
 async def warn_admins(guild):
