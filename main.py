@@ -11,8 +11,6 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
   print('Login successful as {0.user}'.format(client))
-  if len(db['guilds'].keys())== 0:
-    db['guilds'] = {}
   await automate(client)
 
 @client.event
