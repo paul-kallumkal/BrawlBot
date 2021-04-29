@@ -1,14 +1,9 @@
 import os
 import discord
 from active import active
-<<<<<<< HEAD
-from read_message import stat_msg, id_msg, cmd_msg, help_msg, auto_msg
-from functions import roll_check
-=======
-from read_message import stat_msg, id_msg, cmd_msg, help_msg, auto_msg, reset_msg, stop_msg
+from read_message import stat_msg, add_msg, cmd_msg, help_msg, auto_msg, reset_msg, stop_msg, ghot_msg
 from functions import role_check, automate, warn_admins
 from replit import db
->>>>>>> 4e61ae53a33806e55088cd41b46dc99e5cc18d94
 
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
@@ -16,9 +11,6 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
   print('Login successful as {0.user}'.format(client))
-<<<<<<< HEAD
-  await roll_check(client)
-=======
   await automate(client)
 
 @client.event
@@ -32,27 +24,20 @@ async def on_guild_join(guild):
 async def on_guild_leave(guild):
   if(str(guild.id) in db['guilds'].keys()):
     db['guilds'].pop(str(guild.id))
->>>>>>> 4e61ae53a33806e55088cd41b46dc99e5cc18d94
 
 @client.event
 async def on_message(message):
   if message.author == client.user:
     return
   await stat_msg(message)
-<<<<<<< HEAD
-  await id_msg(message)
-  await cmd_msg(message)
-  await help_msg(message)
-  await auto_msg(message)
-=======
-  await id_msg(client, message)
+  await add_msg(client, message)
   await cmd_msg(message)
   await help_msg(message)
   await stop_msg(client, message)
-
+  await ghot_msg(message)
+  #admin commands
   await auto_msg(message)
   await reset_msg(client, message)
->>>>>>> 4e61ae53a33806e55088cd41b46dc99e5cc18d94
 
 active()
 client.run(os.environ['BOT_TOKEN'])
