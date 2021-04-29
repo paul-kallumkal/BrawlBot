@@ -4,26 +4,32 @@ Brawlbot is a fun project I started to automate role distribution in my discord 
 
 Please provide all the permissions requested while adding the bot or it may not function correctly  
 
-[Link to add BrawlBot](https://discord.com/api/oauth2/authorize?client_id=836287558970900540&permissions=268487744&scope=bot)
+[Link to add BrawlBot](https://discord.com/api/oauth2/authorize?client_id=836287558970900540&permissions=268487744&scope=bot) 
 
-### Prefix : bb   
+&nbsp;
+## Prefix : bb   
 Use this before calling any command (example: bb help)  
-
-## Currently supported command List:
+&nbsp;
+&nbsp;
+## Currently supported command List:  
 ### Standard commands
 commands   
 help  
-id (Brawlhalla ID)
+id (Brawlhalla ID)   
 set (same as id)  
-profile
-rank (same as profile)
-stats (same as profile)
-stop  
+profile  
+rank (same as profile)   
+stats (same as profile)  
+stop    
+  
+&nbsp;
 ### Admin commands
 auto  (true/false)  
-reset
-
+reset   
+&nbsp;
+&nbsp;
+&nbsp;
 The bot is hosted on [Replit.com](https://replit.com/@PaulKallumkal/BrawlBot)  
 To keep it active 24/7 the bot relies on [uptimerobot.com](https://uptimerobot.com/)  
 
-A special thanks to Brawlhalla developers for supporting this project by providing an API key which Brawlbot uses to fetch information  
+A special thanks to Brawlhalla developers for supporting this project by providing an API key which Brawlbot uses to fetch information from [api.brawlhalla.com](https://api.brawlhalla.com)
