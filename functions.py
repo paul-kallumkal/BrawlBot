@@ -4,13 +4,15 @@ import requests
 import asyncio
 from replit import db
 
-def get_data(id):
-  response = requests.get('https://api.brawlhalla.com/player/' + str(id) + '/ranked?api_key=' + os.environ['API_KEY'])
+def get_data(brawlID):
+  response = requests.get('https://api.brawlhalla.com/player/' + str(brawlID) + '/ranked?api_key=' + os.environ['API_KEY'])
   json_data = json.loads(response.text)
   if 'tier' in json_data:
     return json_data
   if 'error' in json_data:
-    return 'Too many requests, try again later'
+    print(json_data)
+    if(json_data['error']['code']==429):
+      return 'Too many requests, try again later'
   return 'Unranked'
 
 async def set_role(member,rank):
@@ -57,7 +59,7 @@ async def automate(client):
             if 'tier' in data:
               await set_role(m,data['tier'].split()[0])
             elif data == "Too many requests, try again later":
-              print(data)
+              print("Request limit exceeded")
               await asyncio.sleep(500)
             else:
               await set_role(m,data)
@@ -70,7 +72,6 @@ async def warn_admins(guild):
       await m.send("Hey, I was unable to set up roles properly in " + guild.name + ".\nThis may be due to one or more roles with the same name as Brawlhalla tiers already in the server.\n\nYou can try to fix this by moving the BrawlBot above these roles and using the bb reset command.\nYou can also delete these roles and try adding BrawlBot again or use the bb reset command")
 
 #async def clear_roles(guild):
-  
+  #to be linked with leave command if admin wishes to remove the bot and roles associated with it
 
-
-#function to purge unranked players after a year
+#function to purge unranked players after a year of no rank
