@@ -9,7 +9,7 @@ async def cmd_msg(message):
   
 async def help_msg(message):
   if(message.content == 'bb help'):
-    await message.channel.send('Help:\nUse bb commands to avail a list of commands\nSet up your ID by using bb id (your ID)\nFind your brawlhalla ID under your inventory or look it up at <https://brawldb.com/search>\n')
+    await message.channel.send('Help:\nUse bb commands to avail a list of commands\nSet up your ID by using bb id (your ID)\t(example: bb id 173537)\nFind your brawlhalla ID under your inventory or look it up at <https://brawldb.com/search>\n')
     await message.channel.send(file=discord.File('help.png'))
 
 async def stat_msg(message):
