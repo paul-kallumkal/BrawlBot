@@ -75,7 +75,7 @@ async def auto_msg(message):
         if str(message.guild.id) in db['guilds'].keys():
           db['guilds'].pop(str(message.guild.id))
         return await message.channel.send("Automatic role update is off")
-      return await message.channel.send("Enter true or false after ?auto")
+      return await message.channel.send("Enter either true or false after ?auto")
     await message.channel.send("Admin permissions required")
 
 async def reset_msg(client, message):
