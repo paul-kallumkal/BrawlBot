@@ -69,7 +69,7 @@ async def warn_admins(guild):
     if m.guild_permissions.administrator and m != guild.me:
       await m.send("Hey, I was unable to set up roles properly in " + guild.name + ".\nThis may be due to one or more roles with the same name as Brawlhalla tiers already in the server.\n\nYou can try to fix this by moving the BrawlBot above these roles and using the ?reset command.\nYou can also delete these roles and try adding BrawlBot again or use the ?reset command")
 
-async def clear_roles(guild):
+#async def clear_roles(guild):
   
 
 
