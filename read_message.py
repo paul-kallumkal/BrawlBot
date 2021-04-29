@@ -21,11 +21,14 @@ async def stat_msg(message):
       return await message.channel.send(data)
     await message.channel.send(f"Name: {data['name']}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: " + max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize())
 
-async def set_msg(client, message):
-  if(message.content.startswith('bb id')):
-    data = get_data(message.content.split()[2])
+async def id_msg(client, message):
+  if(message.content.startswith('bb id') or message.content.startswith('bb set')):
+    if(len(message.content.split(' '))==3):
+      data = get_data(message.content.split(' ')[2])
+    else:
+      return await message.channel.send("Invalid ID or Unranked. Try bb help")
     if(data == "Unranked"):
-      return await message.channel.send("Invalid ID. Try bb help")
+      return await message.channel.send("Invalid ID or Unranked. Try bb help")
     if(data == "Too many requests, try again later"):
       return await message.channel.send(data)
     w1 = await message.channel.send(f"Name: {data['name']}\nTier: {data['tier']}\nELO: {data['rating']}\n\nIs this correct?")
@@ -68,10 +71,10 @@ async def auto_msg(message):
     if(message.content == 'bb auto'):
       return await message.channel.send("Automatic role update is on" if str(message.guild.id) in db['guilds'].keys() else "Automatic role update is off")
     if(message.author.guild_permissions.administrator):
-      if 'true' == message.content.split()[1].lower():
+      if 'true' == message.content.split()[2].lower():
         db['guilds'][str(message.guild.id)]=True
         return await message.channel.send("Automatic role update is on")
-      if 'false' == message.content.split()[1].lower():
+      if 'false' == message.content.split()[2].lower():
         if str(message.guild.id) in db['guilds'].keys():
           db['guilds'].pop(str(message.guild.id))
         return await message.channel.send("Automatic role update is off")
