@@ -15,8 +15,9 @@ Use this before calling any command (example: bb help)
 ### Standard commands
 commands   
 help  
-id (Brawlhalla ID)   
-set (same as id)  
+add (Brawlhalla ID)    
+id (same as add)  
+set (same as add)  
 profile  
 rank (same as profile)   
 stats (same as profile)  
