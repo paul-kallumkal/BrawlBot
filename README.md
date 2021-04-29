@@ -15,21 +15,24 @@ Use this before calling any command (example: bb help)
 ### Standard commands
 commands   
 help  
-id (Brawlhalla ID)   
-set (same as id)  
+add (Brawlhalla ID)   
+id (same as add)  
+set (same as add)
 profile  
 rank (same as profile)   
 stats (same as profile)  
 stop    
   
-&nbsp;
 ### Admin commands
 auto  (true/false)  
 reset   
 &nbsp;
 &nbsp;
-&nbsp;
-The bot is hosted on [Replit.com](https://replit.com/@PaulKallumkal/BrawlBot)  
+
+
+## Services  
+The bot is hosted on [replit.com](https://replit.com/@PaulKallumkal/BrawlBot)  
 To keep it active 24/7 the bot relies on [uptimerobot.com](https://uptimerobot.com/)  
+An appropriate domain name was provided by [freenom.com](https://www.freenom.com/)  
 
 A special thanks to Brawlhalla developers for supporting this project by providing an API key which Brawlbot uses to fetch information from [api.brawlhalla.com](https://api.brawlhalla.com)
