@@ -28,7 +28,9 @@ auto  (true/false)
 reset   
 &nbsp;
 &nbsp;
-&nbsp;
+
+
+## Services  
 The bot is hosted on [Replit.com](https://replit.com/@PaulKallumkal/BrawlBot)  
 To keep it active 24/7 the bot relies on [uptimerobot.com](https://uptimerobot.com/)  
 
