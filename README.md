@@ -4,7 +4,9 @@ Brawlbot is a fun project I started to automate role distribution in my discord 
 
 Please provide all the permissions requested while adding the bot or it may not function correctly  
 
-## Prefix : ?   
+[Link to add BrawlBot](https://discord.com/oauth2/authorize?client_id=836287558970900540&permissions=268471360&scope=bot)
+
+### Prefix : ?   
 Use this before calling any command (example: ?help)  
 
 ## Currently supported command List:
@@ -18,7 +20,7 @@ stop
 auto  (true/false)  
 reset
 
-The bot is hosted on replit (https://replit.com/@PaulKallumkal/BrawlBot)  
-Uptimebot is used to keep it active 24/7 (https://uptimerobot.com/)  
+The bot is hosted on [Replit.com](https://replit.com/@PaulKallumkal/BrawlBot)  
+To keep it active 24/7 the bot relies on [uptimerobot.com](https://uptimerobot.com/)  
 
 A special thanks to Brawlhalla developers for supporting this project by providing an API key which Brawlbot uses to fetch information  

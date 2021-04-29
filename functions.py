@@ -3,7 +3,6 @@ import os
 import requests
 import asyncio
 from replit import db
-from threading import Timer
 
 def get_data(id):
   response = requests.get('https://api.brawlhalla.com/player/' + str(id) + '/ranked?api_key=' + os.environ['API_KEY'])
@@ -45,22 +44,29 @@ async def role_check(guild):
   except: return False
 
 async def automate(client):
-  for i in db.keys():
-    data = get_data(db[i])
-    for g in client.guilds:
-      if(g.id in db.keys()):
-        m = g.get_member(int(i))
-        if(m != None):
-          if 'tier' in data:
-            await set_role(m,data['tier'].split()[0])
-          else:
-            await set_role(m,data)
-    await asyncio.sleep(15)
+  while True:
+    keys = db.keys()
+    for i in keys:
+      if i=='guilds':
+        continue
+      data = get_data(db[i])
+      guild_list = db['guilds']
+      for g in guild_list:
+          m = client.get_guild(int(g)).get_member(int(i))
+          if(m != None):
+            if 'tier' in data:
+              await set_role(m,data['tier'].split()[0])
+            elif data == "Too many requests, try again later":
+              await asyncio.sleep(500)
+            else:
+              await set_role(m,data)
+      await asyncio.sleep(15)
+  await asyncio.sleep(5)
       
 async def warn_admins(guild):
   for m in guild.members:
     if m.guild_permissions.administrator and m != guild.me:
-      await m.send("BrawlBot was unable to create roles properly.\nThis may be due to one or more roles with the same name as Brawlhalla tiers already in the server.\n\nYou can try to fix this by moving the BrawlBot above these roles and using the ?reset command.\nYou can also delete these roles and try adding BrawlBot again or use the ?reset command")
+      await m.send("Hey, I was unable to set up roles properly in " + guild.name + ".\nThis may be due to one or more roles with the same name as Brawlhalla tiers already in the server.\n\nYou can try to fix this by moving the BrawlBot above these roles and using the ?reset command.\nYou can also delete these roles and try adding BrawlBot again or use the ?reset command")
 
 
 #function to purge unranked players after a year
