@@ -19,9 +19,9 @@ async def stat_msg(message):
     data = get_data(db[str(message.author.id)])
     if('tier' not in data):
       return await message.channel.send(data)
-    await message.channel.send(f"Name: {data['name']}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: " + max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize())
+    await message.channel.send(f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: " + max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize())
 
-async def id_msg(client, message):
+async def add_msg(client, message):
   if(message.content.lower().startswith('bb id') or message.content.lower().startswith('bb set') or message.content.lower().startswith('bb add')):
     if(len(message.content.split(' '))==3):
       data = get_data(message.content.split(' ')[2])
@@ -31,7 +31,7 @@ async def id_msg(client, message):
       return await message.channel.send("Invalid ID or Unranked. Try bb help")
     if(data == "Too many requests, try again later"):
       return await message.channel.send(data)
-    w1 = await message.channel.send(f"Name: {data['name']}\nTier: {data['tier']}\nELO: {data['rating']}\n\nProceed?")
+    w1 = await message.channel.send(f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nELO: {data['rating']}\n\nProceed?")
     await w1.add_reaction("❌")
     await w1.add_reaction("✅")
     def react_check(reaction, user):

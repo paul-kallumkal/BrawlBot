@@ -1,7 +1,7 @@
 import os
 import discord
 from active import active
-from read_message import stat_msg, id_msg, cmd_msg, help_msg, auto_msg, reset_msg, stop_msg, ghot_msg
+from read_message import stat_msg, add_msg, cmd_msg, help_msg, auto_msg, reset_msg, stop_msg, ghot_msg
 from functions import role_check, automate, warn_admins
 from replit import db
 
@@ -30,7 +30,7 @@ async def on_message(message):
   if message.author == client.user:
     return
   await stat_msg(message)
-  await id_msg(client, message)
+  await add_msg(client, message)
   await cmd_msg(message)
   await help_msg(message)
   await stop_msg(client, message)
