@@ -46,27 +46,32 @@ async def role_check(guild):
 async def automate(client):
   while True:
     keys = db.keys()
-    for i in keys:
-      if i=='guilds':
+    for k in keys:
+      if k=='guilds':
         continue
-      data = get_data(db[i])
+      data = get_data(db[k])
       guild_list = db['guilds']
       for g in guild_list:
-          m = client.get_guild(int(g)).get_member(int(i))
+          m = client.get_guild(int(g)).get_member(int(k))
           if(m != None):
             if 'tier' in data:
               await set_role(m,data['tier'].split()[0])
             elif data == "Too many requests, try again later":
+              print(data)
               await asyncio.sleep(500)
             else:
               await set_role(m,data)
       await asyncio.sleep(15)
-  await asyncio.sleep(5)
+      print("loop")
+    await asyncio.sleep(5)
       
 async def warn_admins(guild):
   for m in guild.members:
     if m.guild_permissions.administrator and m != guild.me:
       await m.send("Hey, I was unable to set up roles properly in " + guild.name + ".\nThis may be due to one or more roles with the same name as Brawlhalla tiers already in the server.\n\nYou can try to fix this by moving the BrawlBot above these roles and using the ?reset command.\nYou can also delete these roles and try adding BrawlBot again or use the ?reset command")
+
+async def clear_roles(guild):
+  
 
 
 #function to purge unranked players after a year

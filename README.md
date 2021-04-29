@@ -4,7 +4,7 @@ Brawlbot is a fun project I started to automate role distribution in my discord 
 
 Please provide all the permissions requested while adding the bot or it may not function correctly  
 
-[Link to add BrawlBot](https://discord.com/oauth2/authorize?client_id=836287558970900540&permissions=268471360&scope=bot)
+[Link to add BrawlBot](https://discord.com/api/oauth2/authorize?client_id=836287558970900540&permissions=268487744&scope=bot)
 
 ### Prefix : ?   
 Use this before calling any command (example: ?help)  
@@ -13,8 +13,10 @@ Use this before calling any command (example: ?help)
 ### Standard commands
 commands   
 help  
-set (Brawlhalla ID)  
-rank (stats can also be used)  
+id (Brawlhalla ID)  
+profile
+rank (same as profile)
+stats (same as profile)
 stop  
 ### Admin commands
 auto  (true/false)  

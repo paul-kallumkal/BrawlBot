@@ -5,7 +5,7 @@ import asyncio
 
 async def cmd_msg(message):
   if(message.content == '?commands'):
-    await message.channel.send('Commands:\n?commands: Shows list of commands\n?help: Get assistance linking your account\n?rank: Get your game statistics\n?set (Your ID): Allots a server role based on your ranked tier\n?stop: Stop tracking your brawlhalla profile\n\nAdmin only\n?auto (true/false): Manage automatic role update\n?reset: Reset server roles (may take a while to update all members)')
+    await message.channel.send('Commands:\n?commands: Shows list of commands\n?help: Get assistance linking your account\n?profile: Get your game statistics\n?id (Your ID): Allots a server role based on your ranked tier\n?stop: Stop tracking your brawlhalla profile\n\nAdmin only\n?auto (true/false): Manage automatic role update\n?reset: Reset server roles (may take a while to update all members)')
   
 async def help_msg(message):
   if(message.content == '?help'):
@@ -13,7 +13,7 @@ async def help_msg(message):
     await message.channel.send(file=discord.File('help.png'))
 
 async def stat_msg(message):
-  if(message.content == '?stats' or message.content == '?rank'):
+  if(message.content == '?stats' or message.content == '?rank' or message.content == '?profile'):
     if(str(message.author.id) not in db.keys()):
       return await message.channel.send('First set up your ID (?set)')
     data = get_data(db[str(message.author.id)])
@@ -22,7 +22,7 @@ async def stat_msg(message):
     await message.channel.send(f"Name: {data['name']}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: " + max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize())
 
 async def set_msg(client, message):
-  if(message.content.startswith('?set')):
+  if(message.content.startswith('?id')):
     data = get_data(message.content.split()[1])
     if(data == "Unranked"):
       return await message.channel.send("Invalid ID. Try ?help")
@@ -45,6 +45,8 @@ async def set_msg(client, message):
 
 async def stop_msg(client, message):
   if(message.content == '?stop'):
+    if str(message.author.id) not in db.keys():
+      return await message.channel.send("Your profile is not being tracked")
     w1 = await message.channel.send("Warning: You will have to set up your ID again if you want automatic role updates. Proceed?")
     await w1.add_reaction("❌")
     await w1.add_reaction("✅")
@@ -69,15 +71,17 @@ async def auto_msg(message):
       if 'true' == message.content.split()[1].lower():
         db['guilds'][str(message.guild.id)]=True
         return await message.channel.send("Automatic role update is on")
-      if str(message.guild.id) in db['guilds'].keys():
-        db['guilds'].pop(str(message.guild.id))
-      return await message.channel.send("Automatic role update is off")
+      if 'false' == message.content.split()[1].lower():
+        if str(message.guild.id) in db['guilds'].keys():
+          db['guilds'].pop(str(message.guild.id))
+        return await message.channel.send("Automatic role update is off")
+      return await message.channel.send("Enter true or false after ?auto")
     await message.channel.send("Admin permissions required")
 
 async def reset_msg(client, message):
   if(message.content == '?reset'):
     if(message.author.guild_permissions.administrator):
-      w1 = await message.channel.send("Warning: This will reset all tier roles. Proceed?")
+      w1 = await message.channel.send("Warning: This will reset all tier roles and it may take time to update all members again. Proceed?")
       await w1.add_reaction("❌")
       await w1.add_reaction("✅")
       def react_check(reaction, user):
