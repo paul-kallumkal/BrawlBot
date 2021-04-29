@@ -30,7 +30,8 @@ reset
 
 
 ## Services  
-The bot is hosted on [Replit.com](https://replit.com/@PaulKallumkal/BrawlBot)  
+The bot is hosted on [replit.com](https://replit.com/@PaulKallumkal/BrawlBot)  
 To keep it active 24/7 the bot relies on [uptimerobot.com](https://uptimerobot.com/)  
+An appropriate domain name was provided by [freenom.com](https://www.freenom.com/)  
 
 A special thanks to Brawlhalla developers for supporting this project by providing an API key which Brawlbot uses to fetch information from [api.brawlhalla.com](https://api.brawlhalla.com)
