@@ -22,7 +22,6 @@ rank (same as profile)
 stats (same as profile)  
 stop    
   
-&nbsp;
 ### Admin commands
 auto  (true/false)  
 reset   
