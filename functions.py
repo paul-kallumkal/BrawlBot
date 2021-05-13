@@ -5,6 +5,17 @@ import asyncio
 from replit import db
 
 def get_data(brawlID):
+  response = requests.get('https://api.brawlhalla.com/player/' + str(brawlID) + '/stats?api_key=' + os.environ['API_KEY'])
+  json_data = json.loads(response.text)
+  if 'name' in json_data:
+    return json_data
+  if 'error' in json_data:
+    print(json_data)
+    if(json_data['error']['code']==429):
+      return 'Too many requests, try again later'
+  return 'Fail'
+
+def get_ranked(brawlID):
   response = requests.get('https://api.brawlhalla.com/player/' + str(brawlID) + '/ranked?api_key=' + os.environ['API_KEY'])
   json_data = json.loads(response.text)
   if 'tier' in json_data:
@@ -17,7 +28,8 @@ def get_data(brawlID):
 
 async def set_role(member,rank):
   roles = ['Diamond','Platinum','Gold','Silver','Bronze','Tin']
-  roles.remove(rank)
+  if rank in roles:
+    roles.remove(rank)
 
   for role in member.roles:
     if(str(role) in roles):
@@ -51,19 +63,20 @@ async def automate(client):
     for k in keys:
       if k=='guilds':
         continue
-      data = get_data(db[k])
-      guild_list = db['guilds']
-      for g in guild_list:
-          m = client.get_guild(int(g)).get_member(int(k))
-          if(m != None):
-            if 'tier' in data:
-              await set_role(m,data['tier'].split()[0])
-            elif data == "Too many requests, try again later":
-              print("Request limit exceeded")
-              await asyncio.sleep(500)
-            else:
-              await set_role(m,data)
-      await asyncio.sleep(15)
+      if k in db.keys():
+        data = get_ranked(db[k])
+        guild_list = db['guilds']
+        for g in guild_list:
+            m = client.get_guild(int(g)).get_member(int(k))
+            if(m != None):
+              if 'tier' in data:
+                await set_role(m,data['tier'].split()[0])
+              elif data == "Too many requests, try again later":
+                print("Request limit exceeded")
+                await asyncio.sleep(500)
+              else:
+                await set_role(m,data)
+        await asyncio.sleep(15)
     await asyncio.sleep(5)
       
 async def warn_admins(guild):
@@ -71,7 +84,45 @@ async def warn_admins(guild):
     if m.guild_permissions.administrator and m != guild.me:
       await m.send("Hey, I was unable to set up roles properly in " + guild.name + ".\nThis may be due to one or more roles with the same name as Brawlhalla tiers already in the server.\n\nYou can try to fix this by moving the BrawlBot above these roles and using the bb reset command.\nYou can also delete these roles and try adding BrawlBot again or use the bb reset command")
 
+def link_steam(code):
+  
+  data ={
+    "client_id":836287558970900540,
+    "client_secret":os.environ['BOT_SECRET'],
+    "grant_type": "authorization_code",
+    "code": code,
+    "redirect_uri": "https://BrawlBot.paulkallumkal.repl.co/login"
+  }
+  try:
+    dKey = json.loads(requests.post('https://discord.com/api/oauth2/token',data = data).text)['access_token']
+  except:
+    return "An unknown error occured"
+
+  cons = json.loads(requests.get('https://discord.com/api/users/@me/connections', headers={"Authorization":"Bearer " + dKey}).text)
+  sID=0
+  for con in cons:
+    if con['type']=='steam':
+      sID=con['id']
+      break;
+  if sID==0:
+    return "Please link your Steam under Discord Settings->Connections"
+  
+  dID = json.loads(requests.get('https://discord.com/api/users/@me',headers={"Authorization":"Bearer " + dKey}).text)['id']
+
+  brawlID = json.loads(requests.get('https://api.brawlhalla.com/search?steamid=' + str(sID) + '&api_key=' + os.environ['API_KEY']).text)
+ 
+  if 'brawlhalla_id' in brawlID:
+    db[str(dID)]=brawlID['brawlhalla_id']
+  else:
+    return "Brawlhalla account associated with your Steam not found"
+  return "Account link successful"
+
+async def unset_role(member):
+  roles = ['Diamond','Platinum','Gold','Silver','Bronze','Tin']
+
+  for role in member.roles:
+    if(str(role) in roles):
+      await member.remove_roles(role)
+
 #async def clear_roles(guild):
   #to be linked with leave command if admin wishes to remove the bot and roles associated with it
-
-#function to purge unranked players after a year of no rank

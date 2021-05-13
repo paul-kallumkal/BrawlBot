@@ -4,8 +4,15 @@ Brawlbot is a fun project I started to automate role distribution in my discord 
 
 Please provide all the permissions requested while adding the bot or it may not function correctly  
 
-BrawlBot can be found at [brawlbot.ml](http://brawlbot.ml)  
+BrawlBot can be found at [addbrawlbot.ml](http://brawlbot.ml)  
 [Direct link](https://discord.com/api/oauth2/authorize?client_id=836287558970900540&permissions=268487744&scope=bot)  
+
+## Updates
+Version 1.0
+No need to find your ID anymore, simply link your steam and head over to [brawlbot.ml](https://brawlbot.ml) for a quick setup.  
+Unranked players can now register with the bot.  
+Using the stop command also removes roles associated with the bot.  
+Info command added 
 
 &nbsp;
 ## Prefix : bb   
@@ -14,15 +21,17 @@ Use this before calling any command (example: bb help)
 &nbsp;
 ## Currently supported command List:  
 ### Standard commands
-commands   
+commands
+command (same as commands)   
 help  
-add (Brawlhalla ID)   
-id (same as add)  
-set (same as add)  
+add
+set (same as add)
 profile  
-rank (same as profile)   
-stats (same as profile)  
-stop    
+stats (same as profile)
+ranked   
+rank (same as ranked)
+stop   
+info 
   
 ### Admin commands
 auto  (true/false)  
@@ -34,6 +43,6 @@ reset
 ## Services  
 The bot is hosted on [replit.com](https://replit.com/@PaulKallumkal/BrawlBot)  
 To keep it active 24/7 the bot relies on [uptimerobot.com](https://uptimerobot.com/)  
-An appropriate domain name was provided by [freenom.com](https://www.freenom.com/)  
+Appropriate domain names were provided by [freenom.com](https://www.freenom.com/)  
 
 A special thanks to Brawlhalla developers for supporting this project by providing an API key which Brawlbot uses to fetch information from [api.brawlhalla.com](https://api.brawlhalla.com)

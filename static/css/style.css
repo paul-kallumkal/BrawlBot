@@ -1,0 +1,11 @@
+body{
+  background-color: #FCB
+}
+
+img{
+    size: cover;
+    position: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}

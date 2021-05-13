@@ -1,7 +1,7 @@
 import os
 import discord
 from active import active
-from read_message import stat_msg, add_msg, cmd_msg, help_msg, auto_msg, reset_msg, stop_msg, ghot_msg
+from read_message import rank_msg, add_msg, cmd_msg, help_msg, auto_msg, reset_msg, stop_msg, ghot_msg,lite_msg, stat_msg, info_msg
 from functions import role_check, automate, warn_admins
 from replit import db
 
@@ -29,12 +29,15 @@ async def on_guild_leave(guild):
 async def on_message(message):
   if message.author == client.user:
     return
+  await rank_msg(message)
   await stat_msg(message)
   await add_msg(client, message)
   await cmd_msg(message)
   await help_msg(message)
   await stop_msg(client, message)
   await ghot_msg(message)
+  await lite_msg(message)
+  await info_msg(message)
   #admin commands
   await auto_msg(message)
   await reset_msg(client, message)
