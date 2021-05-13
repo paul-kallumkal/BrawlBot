@@ -12,7 +12,7 @@ Version 1.0
 No need to find your ID anymore, simply link your steam and head over to [brawlbot.ml](https://brawlbot.ml) for a quick setup.  
 Unranked players can now register with the bot.  
 Using the stop command also removes roles associated with the bot.  
-Info command added 
+Info command added  
 
 &nbsp;
 ## Prefix : bb   
@@ -20,18 +20,18 @@ Use this before calling any command (example: bb help)
 &nbsp;
 &nbsp;
 ## Currently supported command List:  
-### Standard commands
-commands
+### Standard commands  
+commands  
 command (same as commands)   
 help  
-add
-set (same as add)
+add  
+set (same as add)  
 profile  
-stats (same as profile)
+stats (same as profile)  
 ranked   
-rank (same as ranked)
+rank (same as ranked)  
 stop   
-info 
+info  
   
 ### Admin commands
 auto  (true/false)  
