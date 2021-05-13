@@ -4,7 +4,7 @@ Brawlbot is a fun project I started to automate role distribution in my discord 
 
 Please provide all the permissions requested while adding the bot or it may not function correctly  
 
-BrawlBot can be found at [addbrawlbot.ml](http://brawlbot.ml)  
+BrawlBot can be found at [addbrawlbot.ml](http://addbrawlbot.ml)  
 [Direct link](https://discord.com/api/oauth2/authorize?client_id=836287558970900540&permissions=268487744&scope=bot)  
 
 ## Updates  
