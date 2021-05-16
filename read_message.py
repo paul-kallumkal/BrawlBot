@@ -1,4 +1,4 @@
-from functions import get_ranked, role_check, get_data, unset_role
+from functions import get_ranked, role_check, get_data, unset_role, calc_glory
 from data import get_legends
 from replit import db
 import asyncio
@@ -31,7 +31,7 @@ async def rank_msg(message):
     data = get_ranked(db[str(message.author.id)])
     if('tier' not in data):
       return await message.channel.send(data)
-    await message.channel.send(f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: " + max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize())
+    await message.channel.send(f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: " + max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize()+"\nExpected glory: " + calc_glory(int(data['wins']),int(data['peak_rating'])))
 
 async def stat_msg(message):
   if(message.content.lower() == 'bb stats' or message.content.lower() == 'bb profile'):

@@ -8,11 +8,15 @@ BrawlBot can be found at [addbrawlbot.ml](http://addbrawlbot.ml)
 [Direct link](https://discord.com/api/oauth2/authorize?client_id=836287558970900540&permissions=268487744&scope=bot)  
 
 ## Updates  
-Version 1.0  
+### Version 1.0  
 No need to find your ID anymore, simply link your steam and head over to [brawlbot.ml](http://brawlbot.ml) for a quick setup.  
 Unranked players can now register with the bot.  
 Using the stop command also removes roles associated with the bot.  
 Info command added  
+
+### Version 1.1
+Expected glory added to ranked
+ 
 
 &nbsp;
 ## Prefix : bb   

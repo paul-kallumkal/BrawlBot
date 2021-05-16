@@ -1,5 +1,6 @@
 import json
 import os
+import math
 import requests
 import asyncio
 from replit import db
@@ -123,6 +124,27 @@ async def unset_role(member):
   for role in member.roles:
     if(str(role) in roles):
       await member.remove_roles(role)
+
+def calc_glory(wins,peak):
+  if wins <= 150:
+    wglory = wins*20
+  else:
+    wglory = 245 + math.pow(450*math.log10(2*wins),2)
+  if peak<1200:
+    pglory = 250
+  elif peak<1286:
+    pglory = 250 + 750*(peak-1200)/86
+  elif peak<1390:
+    pglory = 1000 + 750*(peak-1286)/104
+  elif peak<1680:
+    pglory = 1870 + 1130*(peak-1390)/290
+  elif peak<2000:
+    pglory = 3000 + 1370*(peak-1680)/320
+  elif peak<2300:
+    pglory = 4370 + 430*(peak-2000)/300
+  else:
+    pglory = 4800 + (peak-2300)/2
+  return str(int(pglory + wglory))
 
 #async def clear_roles(guild):
   #to be linked with leave command if admin wishes to remove the bot and roles associated with it
