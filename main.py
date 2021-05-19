@@ -11,7 +11,8 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
   print('Login successful as {0.user}'.format(client))
-  await automate(client)
+  await client.change_presence(activity=discord.Game('against Sandstorm'))
+  return await automate(client)
 
 @client.event
 async def on_guild_join(guild):
@@ -19,6 +20,7 @@ async def on_guild_join(guild):
     db['guilds'][str(guild.id)]=True 
   else:
     await warn_admins(guild)
+  return 
   
 @client.event
 async def on_guild_leave(guild):
@@ -40,7 +42,7 @@ async def on_message(message):
   await info_msg(message)
   #admin commands
   await auto_msg(message)
-  await reset_msg(client, message)
+  return await reset_msg(client, message) 
 
 active()
 client.run(os.environ['BOT_TOKEN'])

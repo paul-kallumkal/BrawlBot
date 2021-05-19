@@ -23,8 +23,7 @@ def get_ranked(brawlID):
     return json_data
   if 'error' in json_data:
     print(json_data)
-    if(json_data['error']['code']==429):
-      return 'Too many requests, try again later'
+    return 'error'
   return 'Unranked'
 
 async def set_role(member,rank):
@@ -68,16 +67,14 @@ async def automate(client):
         data = get_ranked(db[k])
         guild_list = db['guilds']
         for g in guild_list:
-            m = client.get_guild(int(g)).get_member(int(k))
-            if(m != None):
-              if 'tier' in data:
-                await set_role(m,data['tier'].split()[0])
-              elif data == "Too many requests, try again later":
-                print("Request limit exceeded")
-                await asyncio.sleep(500)
-              else:
-                await set_role(m,data)
-        await asyncio.sleep(15)
+          await asyncio.sleep(1)
+          m = client.get_guild(int(g)).get_member(int(k))
+          if(m != None):
+            if 'tier' in data:
+              await set_role(m,data['tier'].split()[0])
+            elif data == "error":
+              await asyncio.sleep(500)
+        await asyncio.sleep(14)
     await asyncio.sleep(5)
       
 async def warn_admins(guild):
@@ -89,7 +86,7 @@ def link_steam(code):
   
   data ={
     "client_id":836287558970900540,
-    "client_secret":os.environ['BOT_SECRET'],
+    "client_secret":os.environ['CLIENT_SECRET'],
     "grant_type": "authorization_code",
     "code": code,
     "redirect_uri": "https://BrawlBot.paulkallumkal.repl.co/login"
@@ -144,6 +141,8 @@ def calc_glory(wins,peak):
     pglory = 4370 + 430*(peak-2000)/300
   else:
     pglory = 4800 + (peak-2300)/2
+  if wins<10:
+    return "0 (You need at least 10 ranked wins to earn glory)"
   return str(int(pglory + wglory))
 
 #async def clear_roles(guild):

@@ -1,4 +1,4 @@
-from functions import get_ranked, role_check, get_data, unset_role, calc_glory
+from functions import get_ranked, role_check, get_data, set_role,unset_role, calc_glory
 from data import get_legends
 from replit import db
 import asyncio
@@ -12,7 +12,7 @@ async def info_msg(message):
     for legend in legends:
       if legend['legend_name_key']==name:
         return await message.channel.send(f"Name: {legend['bio_name']}\nBot Name: {legend['bot_name']}\nTitle: {legend['bio_aka']}\n\n{legend['bio_text']}\n\nWeapons: {legend['weapon_one']}, {legend['weapon_two']}\nStrength: {legend['strength']}\tDexiterity: {legend['dexterity']}\nDefense: {legend['defense']}\t Speed: {legend['speed']}")
-    await message.channel.send("Legend can't be found, please check your spelling and try again")
+    return await message.channel.send("Legend can't be found, please check your spelling and try again")
 
 async def cmd_msg(message):
   if(message.content.lower() == 'bb commands' or message.content.lower() == 'bb command'):
@@ -20,9 +20,7 @@ async def cmd_msg(message):
   
 async def help_msg(message):
   if(message.content.lower() == 'bb help'):
-    await message.channel.send("Help:\nUse bb commands to avail a list of commands")
-    await message.channel.send("Under Discord Settings->Connections link your steam profile to discord")
-    await message.channel.send("Then head to <http://brawlbot.ml> to activate your BrawlBot profile instantly")
+    await message.channel.send("Help:\nUse bb commands to avail a list of commands\nUnder Discord Settings->Connections link your Steam profile to Discord\nThen head to <http://brawlbot.ml> to activate your BrawlBot profile instantly")
 
 async def rank_msg(message):
   if(message.content.lower() == 'bb ranked' or message.content.lower() == 'bb rank'):
@@ -31,7 +29,8 @@ async def rank_msg(message):
     data = get_ranked(db[str(message.author.id)])
     if('tier' not in data):
       return await message.channel.send(data)
-    await message.channel.send(f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: " + max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize()+"\nExpected glory: " + calc_glory(int(data['wins']),int(data['peak_rating'])))
+    await set_role(message.author,data['tier'].split()[0])
+    return await message.channel.send(f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: {max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize()}\nExpected glory: {calc_glory(int(data['wins']),int(data['peak_rating']))}")
 
 async def stat_msg(message):
   if(message.content.lower() == 'bb stats' or message.content.lower() == 'bb profile'):

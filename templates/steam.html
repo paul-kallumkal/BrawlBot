@@ -7,7 +7,12 @@
   <title>BrawlBot</title>
 </head>
 <body>
-  <h1>{{message}}</h1>
+  <div class="container">
+    <img src="{{ url_for('static', filename='hero.jpeg') }}">
+    <div class="centered">
+      <h1>{{message}}</h1>
+    </div>
+  </div>
 </body>
 </html>
 

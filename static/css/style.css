@@ -1,11 +1,25 @@
 body{
-  background-color: #FCB
+  background-color: rgb(44, 119, 113);
 }
 
 img{
-    size: cover;
-    position: center;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
+  object-fit: cover;
+  left:8px;
+  top:8px;
+}
+
+.container {
+  position: relative;
+  text-align: center;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+h1{
+
 }
