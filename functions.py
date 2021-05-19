@@ -12,8 +12,7 @@ def get_data(brawlID):
     return json_data
   if 'error' in json_data:
     print(json_data)
-    if(json_data['error']['code']==429):
-      return 'Too many requests, try again later'
+    return json_data
   return 'Fail'
 
 def get_ranked(brawlID):
@@ -23,7 +22,7 @@ def get_ranked(brawlID):
     return json_data
   if 'error' in json_data:
     print(json_data)
-    return 'error'
+    return json_data
   return 'Unranked'
 
 async def set_role(member,rank):
@@ -72,7 +71,7 @@ async def automate(client):
           if(m != None):
             if 'tier' in data:
               await set_role(m,data['tier'].split()[0])
-            elif data == "error":
+            elif 'error' in data and data['error']['code']==429:
               await asyncio.sleep(500)
         await asyncio.sleep(14)
     await asyncio.sleep(5)
@@ -111,6 +110,8 @@ def link_steam(code):
  
   if 'brawlhalla_id' in brawlID:
     db[str(dID)]=brawlID['brawlhalla_id']
+  elif 'error' in brawlID:
+    return brawlID['error']['message']
   else:
     return "Brawlhalla account associated with your Steam not found"
   return "Account link successful"

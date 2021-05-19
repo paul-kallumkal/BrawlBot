@@ -27,8 +27,8 @@ async def rank_msg(message):
     if(str(message.author.id) not in db.keys()):
       return await message.channel.send('First set up your ID (bb add)')
     data = get_ranked(db[str(message.author.id)])
-    if('tier' not in data):
-      return await message.channel.send(data)
+    if('error' in data):
+      return await message.channel.send(data['error']['message'])
     await set_role(message.author,data['tier'].split()[0])
     return await message.channel.send(f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: {max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize()}\nExpected glory: {calc_glory(int(data['wins']),int(data['peak_rating']))}")
 
@@ -37,21 +37,20 @@ async def stat_msg(message):
     if(str(message.author.id) not in db.keys()):
       return await message.channel.send('First set up your ID (bb add)')
     data = get_data(db[str(message.author.id)])
-    if('name' not in data):
-      return await message.channel.send(data)
+    if('error' in data):
+      return await message.channel.send(data['error']['message'])
     await message.channel.send(f"Name: {data['name'].encode('latin').decode()}\nLevel: {data['level']}\nGames: {data['games']}\tWins: {data['wins']}\nBest legend: " + max(data['legends'], key=lambda x:x['level'])['legend_name_key'].capitalize())
 
 async def allstat_msg(message):
-   if(message.content.lower() == 'bb stats' or message.content.lower() == 'bb profile'):
+   if(message.content.lower() == 'bb allstats' or message.content.lower() == 'bb allprofile'):
     if(str(message.author.id) not in db.keys()):
       return await message.channel.send('First set up your ID (bb add)')
     data = get_data(db[str(message.author.id)])
-    if('name' not in data):
-      return await message.channel.send(data)
+    if('error' in data):
+      return await message.channel.send(data['error']['message'])
     clan = ""
     if("clan" in data):
       clan = "\nClan: " + data['clan']['clan_name']
-
     await message.channel.send(f"Name: {data['name'].encode('latin').decode()}\nLevel: {data['level']}\nGames: {data['games']}\tWins: {data['wins']}\nBest legend: " + max(data['legends'], key=lambda x:x['level'])['legend_name_key'].capitalize() + clan)
 
 async def add_msg(client, message):
