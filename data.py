@@ -1,3 +1,9 @@
+def get_info(name):
+  for legend in legends:
+    if legend['legend_name_key']==name:
+      return f"Name: {legend['bio_name']}\nBot Name: {legend['bot_name']}\nTitle: {legend['bio_aka']}\n\n{legend['bio_text']}\n\nWeapons: {legend['weapon_one']}, {legend['weapon_two']}\nStrength: {legend['strength']}\tDexiterity: {legend['dexterity']}\nDefense: {legend['defense']}\t Speed: {legend['speed']}"
+  return "Legend can't be found, please check your spelling and try again"
+
 legends = [
   {
     "legend_id":3,
@@ -954,6 +960,3 @@ legends = [
     "speed":"5"
   }
 ]
-
-def get_legends():
-  return legends

@@ -17,6 +17,11 @@ Info command added
 ### Version 1.1
 Expected glory added to ranked
  
+### Version 1.2
+Add command removed   
+Major optimisations and code cleanup  
+Rank retained when servers go down  
+Error messages more relevant
 
 &nbsp;
 ## Prefix : bb   
@@ -28,8 +33,6 @@ Use this before calling any command (example: bb help)
 commands  
 command (same as commands)   
 help  
-add  
-set (same as add)  
 profile  
 stats (same as profile)  
 ranked   

@@ -5,25 +5,34 @@ import requests
 import asyncio
 from replit import db
 
-def get_data(brawlID):
-  response = requests.get('https://api.brawlhalla.com/player/' + str(brawlID) + '/stats?api_key=' + os.environ['API_KEY'])
-  json_data = json.loads(response.text)
-  if 'name' in json_data:
-    return json_data
-  if 'error' in json_data:
-    print(json_data)
-    return json_data
-  return 'Fail'
+def get_commands():
+  return "Commands:\nbb commands: Shows list of commands\nbb help: Get assistance linking your account\nbb profile: Get your game statistics\nbb ranked: get your ranked statistics\nbb info (name): Get a legend's backstory and stats\nbb stop: Stop tracking your brawlhalla profile\n\nAdmin only\nbb auto (true/false): Manage automatic role update\nbb reset: Reset server roles (may take a while to update all members)"
 
-def get_ranked(brawlID):
-  response = requests.get('https://api.brawlhalla.com/player/' + str(brawlID) + '/ranked?api_key=' + os.environ['API_KEY'])
-  json_data = json.loads(response.text)
-  if 'tier' in json_data:
-    return json_data
-  if 'error' in json_data:
-    print(json_data)
-    return json_data
+def get_help():
+  return "Help:\nUse bb commands to avail a list of commands\nUnder Discord Settings->Connections link your Steam profile to Discord\nThen head to <http://brawlbot.ml> to activate your BrawlBot profile instantly"
+
+def get_setup():
+  return "First set up your ID.\nLink your Steam to Discord under Settings->Connections and head to <http://brawlbot.ml> to set up your BrawlBot profile instantly"
+
+def get_profile(brawlID):
+  data = json.loads(requests.get('https://api.brawlhalla.com/player/' + str(brawlID) + '/stats?api_key=' + os.environ['API_KEY']).text)
+  if 'name' in data:
+    return f"Name: {data['name'].encode('latin').decode()}\nLevel: {data['level']}\nGames: {data['games']}\tWins: {data['wins']}\nBest legend: {max(data['legends'], key=lambda x:x['level'])['legend_name_key'].capitalize()}"
+  if 'error' in data: 
+    return data['error']['message']
+  return "Failed to retrieve your profile"
+
+async def get_ranked(discordID):
+  data = json.loads(requests.get('https://api.brawlhalla.com/player/' + str(db[str(discordID.id)]) + '/ranked?api_key=' + os.environ['API_KEY']).text)
+  if('error' in data):
+    return data['error']['message']
+  if 'tier' in data:
+    await set_role(discordID,data['tier'].split()[0])
+    return f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: {max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize()}\nExpected glory: {calc_glory(int(data['wins']),int(data['peak_rating']))}"
   return 'Unranked'
+
+def get_rank(BrawlID):
+  return json.loads(requests.get('https://api.brawlhalla.com/player/' + str(BrawlID) + '/ranked?api_key=' + os.environ['API_KEY']).text)
 
 async def set_role(member,rank):
   roles = ['Diamond','Platinum','Gold','Silver','Bronze','Tin']
@@ -34,10 +43,6 @@ async def set_role(member,rank):
     if(str(role) in roles):
       await member.remove_roles(role)
 
-  for role in member.roles:
-    if str(role) == rank:
-      return
-  
   for role in member.guild.roles:
     if(str(role) == rank):
       return await member.add_roles(role)
@@ -63,7 +68,7 @@ async def automate(client):
       if k=='guilds':
         continue
       if k in db.keys():
-        data = get_ranked(db[k])
+        data = get_rank(db[k])
         guild_list = db['guilds']
         for g in guild_list:
           await asyncio.sleep(1)
@@ -115,13 +120,6 @@ def link_steam(code):
   else:
     return "Brawlhalla account associated with your Steam not found"
   return "Account link successful"
-
-async def unset_role(member):
-  roles = ['Diamond','Platinum','Gold','Silver','Bronze','Tin']
-
-  for role in member.roles:
-    if(str(role) in roles):
-      await member.remove_roles(role)
 
 def calc_glory(wins,peak):
   if wins <= 150:
