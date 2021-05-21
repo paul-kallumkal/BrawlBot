@@ -119,4 +119,5 @@ async def reset_msg(client, message):
         return await message.channel.send("Reset complete")
       else:
         return await message.channel.send("An error encountered")
-    await message.channel.send("Admin permissions required")
+    return await message.channel.send("Admin permissions required")
+

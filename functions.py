@@ -22,30 +22,26 @@ def get_profile(brawlID):
     return data['error']['message']
   return "Failed to retrieve your profile"
 
-async def get_ranked(discordID):
-  data = json.loads(requests.get('https://api.brawlhalla.com/player/' + str(db[str(discordID.id)]) + '/ranked?api_key=' + os.environ['API_KEY']).text)
+async def get_ranked(member):
+  data = json.loads(requests.get('https://api.brawlhalla.com/player/' + str(db[str(member.id)]) + '/ranked?api_key=' + os.environ['API_KEY']).text)
   if('error' in data):
     return data['error']['message']
   if 'tier' in data:
-    await set_role(discordID,data['tier'].split()[0])
-    return f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: {max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize()}\nExpected glory: {calc_glory(int(data['wins']),int(data['peak_rating']))}"
+    await set_role(member,data['tier'].split()[0])
+    return f"Name: {data['name'].encode('latin').decode()}\nTier: {data['tier']}\nRating: {data['rating']}\tPeak Rating: {data['peak_rating']}\nGames: {data['games']}\t\tWins: {data['wins']}\nBest legend: {max(data['legends'], key=lambda x:x['rating'])['legend_name_key'].capitalize()}\nExpected glory: {calc_glory(data)}"
   return 'Unranked'
 
 def get_rank(BrawlID):
   return json.loads(requests.get('https://api.brawlhalla.com/player/' + str(BrawlID) + '/ranked?api_key=' + os.environ['API_KEY']).text)
 
 async def set_role(member,rank):
-  roles = ['Diamond','Platinum','Gold','Silver','Bronze','Tin']
-  if rank in roles:
-    roles.remove(rank)
-
-  for role in member.roles:
-    if(str(role) in roles):
-      await member.remove_roles(role)
+  arr = ['Diamond','Platinum','Gold','Silver','Bronze','Tin']
 
   for role in member.guild.roles:
-    if(str(role) == rank):
-      return await member.add_roles(role)
+    if(role.name == rank):
+      await member.add_roles(role)
+    elif(role.name in member.roles and role.name in arr):
+      await member.remove_roles(role)
 
 async def role_check(guild):
   roles = ['Diamond','Platinum','Gold','Silver','Bronze','Tin']
@@ -70,14 +66,16 @@ async def automate(client):
       if k in db.keys():
         data = get_rank(db[k])
         guild_list = db['guilds']
-        for g in guild_list:
-          await asyncio.sleep(1)
+        for g in guild_list:          
+          await asyncio.sleep(0.1)
           m = client.get_guild(int(g)).get_member(int(k))
           if(m != None):
             if 'tier' in data:
               await set_role(m,data['tier'].split()[0])
             elif 'error' in data and data['error']['code']==429:
               await asyncio.sleep(500)
+            elif 'error' in data:
+              print(data)
         await asyncio.sleep(14)
     await asyncio.sleep(5)
       
@@ -121,7 +119,11 @@ def link_steam(code):
     return "Brawlhalla account associated with your Steam not found"
   return "Account link successful"
 
-def calc_glory(wins,peak):
+def calc_glory(data):
+  win1=int(data['wins'])
+  win2=sum(int(row['wins']) for row in data['2v2'])
+  wins=win1+win2
+  peak=int(data['peak_rating'])
   if wins <= 150:
     wglory = wins*20
   else:
@@ -129,17 +131,17 @@ def calc_glory(wins,peak):
   if peak<1200:
     pglory = 250
   elif peak<1286:
-    pglory = 250 + 750*(peak-1200)/86
+    pglory = 250 + 75*(peak-1200)/8.6
   elif peak<1390:
-    pglory = 1000 + 750*(peak-1286)/104
+    pglory = 1000 + 75*(peak-1286)/104.0
   elif peak<1680:
-    pglory = 1870 + 1130*(peak-1390)/290
+    pglory = 1870 + 113*(peak-1390)/29.0
   elif peak<2000:
-    pglory = 3000 + 1370*(peak-1680)/320
+    pglory = 3000 + 137*(peak-1680)/32.0
   elif peak<2300:
-    pglory = 4370 + 430*(peak-2000)/300
+    pglory = 4370 + 43*(peak-2000)/30.0
   else:
-    pglory = 4800 + (peak-2300)/2
+    pglory = 4800 + (peak-2300)/2.0
   if wins<10:
     return "0 (You need at least 10 ranked wins to earn glory)"
   return str(int(pglory + wglory))
