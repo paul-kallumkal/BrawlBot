@@ -29,10 +29,17 @@ async def rank_msg(message):
     return await message.channel.send(await get_ranked(member))
 
 async def stat_msg(message):
-  if(message.content.lower() == 'bb stats' or message.content.lower() == 'bb profile'):
-    if(str(message.author.id) in db.keys()):
-      return await message.channel.send(get_profile(db[str(message.author.id)]))
-    return await message.channel.send(get_setup())
+  if message.content.lower().startswith('bb stats') or message.content.lower().startswith('bb profile'):
+    if len(message.content.split())==2:
+      member=message.author
+      if(str(member.id) not in db.keys()):
+        return await message.channel.send(get_setup())
+    else:
+      member = message.guild.get_member(int(message.content.split()[2][3:21]))
+      if(str(member.id) not in db.keys()):
+        return await message.channel.send("Profile not linked")
+      return await message.channel.send(get_profile(db[str(member.id)]))
+
 
 async def ghot_msg(message):
   if(message.content.lower() == 'bb ghot'):
