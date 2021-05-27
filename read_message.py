@@ -25,7 +25,10 @@ async def rank_msg(message):
       if(str(member.id) not in db.keys()):
         return await message.channel.send(get_setup())
     else:
-      member = message.guild.get_member(int(message.content.split()[2][3:21]))
+      try:
+        member = message.guild.get_member(int(message.content.split()[2][3:21]))
+      except:
+        return await message.channel.send("Profile not linked")
     return await message.channel.send(await get_ranked(member))
 
 async def stat_msg(message):
@@ -38,7 +41,7 @@ async def stat_msg(message):
       member = message.guild.get_member(int(message.content.split()[2][3:21]))
       if(str(member.id) not in db.keys()):
         return await message.channel.send("Profile not linked")
-      return await message.channel.send(get_profile(db[str(member.id)]))
+    return await message.channel.send(get_profile(db[str(member.id)]))
 
 
 async def ghot_msg(message):

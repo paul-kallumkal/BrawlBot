@@ -11,7 +11,7 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
   print('Login successful as {0.user}'.format(client))
-  await client.change_presence(activity=discord.Game('Brawlhalla'))
+  await client.change_presence(activity=discord.Game('with your feelings'))
   return await automate(client)
 
 @client.event
@@ -41,7 +41,7 @@ async def on_message(message):
   await info_msg(message)
   #admin commands
   await auto_msg(message)
-  return await reset_msg(client, message) 
+  await reset_msg(client, message) 
 
 active()
 client.run(os.environ['BOT_TOKEN'])
