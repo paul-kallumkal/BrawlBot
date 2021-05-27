@@ -23,6 +23,8 @@ def get_profile(brawlID):
   return "Failed to retrieve your profile"
 
 async def get_ranked(member):
+  if not member:
+    return 'Unranked'
   data = json.loads(requests.get('https://api.brawlhalla.com/player/' + str(db[str(member.id)]) + '/ranked?api_key=' + os.environ['API_KEY']).text)
   if('error' in data):
     return data['error']['message']
@@ -127,7 +129,7 @@ def calc_glory(data):
   if wins <= 150:
     wglory = wins*20
   else:
-    wglory = 245 + math.pow(450*math.log10(2*wins),2)
+    wglory = 245 + 450*math.pow(math.log10(2*wins),2)
   if peak<1200:
     pglory = 250
   elif peak<1286:
@@ -144,7 +146,7 @@ def calc_glory(data):
     pglory = 4800 + (peak-2300)/2.0
   if wins<10:
     return "0 (You need at least 10 ranked wins to earn glory)"
-  return str(int(pglory + wglory))
+  return str(int(pglory) + int(wglory))
 
 #async def clear_roles(guild):
   #to be linked with leave command if admin wishes to remove the bot and roles associated with it

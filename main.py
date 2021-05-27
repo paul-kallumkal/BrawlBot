@@ -11,7 +11,7 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
   print('Login successful as {0.user}'.format(client))
-  await client.change_presence(activity=discord.Game('against Sandstorm'))
+  await client.change_presence(activity=discord.Game('Brawlhalla'))
   return await automate(client)
 
 @client.event

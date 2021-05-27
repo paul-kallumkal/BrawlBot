@@ -19,10 +19,14 @@ async def help_msg(message):
     await message.channel.send(get_help())
 
 async def rank_msg(message):
-  if(message.content.lower() == 'bb ranked' or message.content.lower() == 'bb rank'):
-    if(str(message.author.id) in db.keys()):
-      return await message.channel.send(await get_ranked(message.author))
-    return await message.channel.send(get_setup())
+  if message.content.lower().startswith('bb rank'):
+    if len(message.content.split())==2:
+      member=message.author
+      if(str(member.id) not in db.keys()):
+        return await message.channel.send(get_setup())
+    else:
+      member = message.guild.get_member(int(message.content.split()[2][3:21]))
+    return await message.channel.send(await get_ranked(member))
 
 async def stat_msg(message):
   if(message.content.lower() == 'bb stats' or message.content.lower() == 'bb profile'):

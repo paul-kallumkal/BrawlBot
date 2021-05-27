@@ -23,6 +23,10 @@ Major optimisations and code cleanup
 Rank retained when servers go down  
 Error messages more relevant
 
+### Version 1.3
+Rank command now supports tagging other users
+Bug in glory calculation fixed for over 150 wins
+
 &nbsp;
 ## Prefix : bb   
 Use this before calling any command (example: bb help)  
