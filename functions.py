@@ -12,7 +12,7 @@ def get_help():
   return "Help:\nUse bb commands to avail a list of commands\nUnder Discord Settings->Connections link your Steam profile to Discord\nThen head to <http://brawlbot.ml> to activate your BrawlBot profile instantly"
 
 def get_setup():
-  return "First set up your ID.\nLink your Steam to Discord under Settings->Connections and head to <http://brawlbot.ml> to set up your BrawlBot profile instantly"
+  return "You need to set up your ID\n1. Link your Steam to Discord under Settings->Connections\n2. Head to <http://brawlbot.ml> to set up your profile instantly"
 
 def get_profile(brawlID):
   data = json.loads(requests.get('https://api.brawlhalla.com/player/' + str(brawlID) + '/stats?api_key=' + os.environ['API_KEY']).text)
@@ -54,26 +54,31 @@ async def role_check(guild):
         if r == str(role):
           await role.delete()
     
-    for i in range(0,6):
+    for i in range(6):
       await guild.create_role(name=roles[i],colour=colours[i],hoist=True,mentionable=True)
     return True
-  except: return False
+  except: 
+    return False
 
 async def automate(client):
   while True:
     keys = db.keys()
+    guild_list = db['guilds']
     for k in keys:
       if k=='guilds':
         continue
       if k in db.keys():
         data = get_rank(db[k])
-        guild_list = db['guilds']
         for g in guild_list:          
           await asyncio.sleep(0.1)
+          if client.get_guild(int(g)) == None:
+            #guild_list.remove(g)
+            #db['guilds'] = guild_list
+            continue
           m = client.get_guild(int(g)).get_member(int(k))
           if(m != None):
             if 'tier' in data:
-              await set_role(m,data['tier'].split()[0])
+              await set_role(m,data['tier'].split(' ')[0])
             elif 'error' in data and data['error']['code']==429:
               await asyncio.sleep(500)
             elif 'error' in data:
@@ -98,11 +103,11 @@ def link_steam(code):
   try:
     dKey = json.loads(requests.post('https://discord.com/api/oauth2/token',data = data).text)['access_token']
   except:
-    return "An unknown error occured"
+    return "An error occured"
 
-  cons = json.loads(requests.get('https://discord.com/api/users/@me/connections', headers={"Authorization":"Bearer " + dKey}).text)
+  connections = json.loads(requests.get('https://discord.com/api/users/@me/connections', headers={"Authorization":"Bearer " + dKey}).text)
   sID=0
-  for con in cons:
+  for con in connections:
     if con['type']=='steam':
       sID=con['id']
       break;
