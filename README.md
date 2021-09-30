@@ -24,9 +24,9 @@ Rank retained when servers go down
 Error messages more relevant
 
 ### Version 1.3
-Rank command now supports tagging other users
-Profile command now supports tagging other users
-Bug fix for glory calculation when over 150 wins
+Rank command now supports tagging other users  
+Profile command now supports tagging other users  
+Bug fix for glory calculation when over 150 wins  
 
 &nbsp;
 ## Prefix : bb   
